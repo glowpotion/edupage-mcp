@@ -1,0 +1,32 @@
+# HTTP mode, for an always-on server. Credentials and MCP_AUTH_TOKEN come from
+# .env (see .env.example):   docker compose up -d
+services:
+  edupage-mcp:
+    image: ghcr.io/frizzy/edupage-mcp:latest
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      MCP_TRANSPORT: http
+      # Inside the container; the published port below decides who can reach it.
+      MCP_HOST: 0.0.0.0
+      MCP_PORT: 8766
+      MCP_AUTH_TOKEN: ${MCP_AUTH_TOKEN:?set MCP_AUTH_TOKEN in .env (openssl rand -hex 32)}
+      # Sessions survive restarts, so a two-factor login is not asked for again.
+      EDUPAGE_SESSION_FILE: /state/sessions.json
+    volumes:
+      - edupage-state:/state
+    ports:
+      # This machine only. Use "8766:8766" to open it to your network.
+      - "127.0.0.1:8766:8766"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8766/healthz')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  edupage-state:

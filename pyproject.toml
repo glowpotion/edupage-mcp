@@ -1,0 +1,35 @@
+[project]
+name = "edupage-mcp"
+version = "0.1.0"
+description = "MCP server for EduPage (edupage.org): timetables, homework, grades, messages, absences and canteen menus"
+readme = "README.md"
+authors = [
+    { name = "Bernard van Niekerk", email = "bernard.van.niekerk@icloud.com" }
+]
+requires-python = ">=3.12"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["mcp", "edupage", "school", "model-context-protocol"]
+dependencies = [
+    "anyio>=4.0",
+    "edupage-api>=0.12.6,<0.13",
+    "mcp>=2.0,<3",
+]
+
+[project.urls]
+Repository = "https://github.com/frizzy/edupage-mcp"
+
+[project.scripts]
+edupage-mcp = "edupage_mcp.server:main"
+
+[build-system]
+requires = ["uv_build>=0.12.18,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

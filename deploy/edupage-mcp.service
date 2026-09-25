@@ -1,0 +1,42 @@
+# Template: deploy/install.sh fills in @USER@ and @APP_DIR@.
+[Unit]
+Description=EduPage MCP server
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=@USER@
+WorkingDirectory=@APP_DIR@
+# Credentials and the bearer token; root-owned, mode 600.
+EnvironmentFile=/etc/edupage-mcp.env
+ExecStart=@APP_DIR@/.venv/bin/edupage-mcp --transport http
+# Cached EduPage sessions (EDUPAGE_SESSION_FILE), so a two-factor login
+# survives restarts: /var/lib/edupage-mcp.
+StateDirectory=edupage-mcp
+StateDirectoryMode=0700
+Restart=on-failure
+RestartSec=5
+
+# The service only needs to read its own code and talk to EduPage.
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=read-only
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectClock=true
+ProtectHostname=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+LockPersonality=true
+CapabilityBoundingSet=
+AmbientCapabilities=
+
+[Install]
+WantedBy=multi-user.target
