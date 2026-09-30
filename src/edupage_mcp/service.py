@@ -25,6 +25,7 @@ from .parsing import (
     parse_timeline_item,
     parse_timetable,
     summarise_grades,
+    text_grade_to_dict,
     thread_messages,
 )
 
@@ -269,24 +270,33 @@ class EdupageService:
         term: str | None, since: str | None,
     ) -> dict[str, Any]:
         s = self.client.resolve_student(student)
-        raw, directory = self.client.grades(s, school_year, term)
+        raw, raw_text, directory = self.client.grades(s, school_year, term)
         grades = [grade_to_dict(g, directory, self.config.timezone) for g in raw]
+        text_grades = [text_grade_to_dict(g, directory, self.config.timezone) for g in raw_text]
         if subject:
             q = fold(subject)
-            exact = [g for g in grades if q in (fold(g["subject"] or ""), fold(g["subject_short"] or ""))]
-            grades = exact or [g for g in grades if q in fold(g["subject"] or "")]
+
+            def by_subject(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+                exact = [g for g in items if q in (fold(g["subject"] or ""), fold(g["subject_short"] or ""))]
+                return exact or [g for g in items if q in fold(g["subject"] or "")]
+
+            grades, text_grades = by_subject(grades), by_subject(text_grades)
         if since:
-            start = self.parse_date(since, "since", self.today())
-            grades = [g for g in grades if (g["date"] or "")[:10] >= start.isoformat()]
+            start = self.parse_date(since, "since", self.today()).isoformat()
+            grades = [g for g in grades if (g["date"] or "")[:10] >= start]
+            text_grades = [g for g in text_grades if (g["date"] or "")[:10] >= start]
         grades.sort(key=lambda g: g["date"] or "", reverse=True)
+        text_grades.sort(key=lambda g: g["date"] or "", reverse=True)
         return {
             "status": "success",
             "student": s.as_dict(),
             "count": len(grades),
             "summary": summarise_grades(grades),
             "grades": grades,
+            "text_grades": text_grades,
             "note": "Marks run 1 (best) to 5. `average` is weighted by each mark's weight; "
-                    "points-based marks are averaged separately as `average_percent`.",
+                    "points-based marks are averaged separately as `average_percent`. "
+                    "`text_grades` are written evaluations with no numeric mark.",
         }
 
     # -- school ------------------------------------------------------------------------------

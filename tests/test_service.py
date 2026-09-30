@@ -182,6 +182,23 @@ def test_grades_subject_filter_prefers_exact_matches(service, today):
         service.get_grades(None, None, 2025, "3", None)
 
 
+def test_grades_include_filtered_text_grades(service, today):
+    from datetime import datetime
+    from types import SimpleNamespace
+
+    def text(grade_id, subject_id, day):
+        return SimpleNamespace(grade_id=grade_id, comment="Great progress", grade_type="Hodnotenie",
+                               date=datetime(2026, 9, day, 9, 0), subject_id=subject_id, subject_name="MAT")
+
+    FakeEdupage.text_grades = [text(1, 201, 10), text(2, 202, 20)]
+    result = service.get_grades(None, None, None, None, None)
+    assert [t["id"] for t in result["text_grades"]] == ["2", "1"]
+    assert result["text_grades"][0]["subject"] == "Informatika"
+    assert result["text_grades"][1]["comment"] == "Great progress"
+    assert [t["id"] for t in service.get_grades(None, "MAT", None, None, None)["text_grades"]] == ["1"]
+    assert [t["id"] for t in service.get_grades(None, None, None, None, "2026-09-15")["text_grades"]] == ["2"]
+
+
 # -- meals -----------------------------------------------------------------------------
 
 

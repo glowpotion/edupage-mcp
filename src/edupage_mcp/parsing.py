@@ -602,6 +602,18 @@ def grade_to_dict(grade: Any, directory: Directory, tz: tzinfo) -> dict[str, Any
     return entry
 
 
+def text_grade_to_dict(grade: Any, directory: Directory, tz: tzinfo) -> dict[str, Any]:
+    """An ``edupage_api`` ``EduTextGrade`` (a written evaluation) as a dict."""
+    return {
+        "id": str(grade.grade_id),
+        "date": grade.date.replace(tzinfo=tz).isoformat() if grade.date else None,
+        "subject": directory.subject_name(grade.subject_id) or grade.subject_name,
+        "subject_short": (directory.subject(grade.subject_id) or {}).get("short") or grade.subject_name,
+        "type": grade.grade_type,
+        "comment": grade.comment or None,
+    }
+
+
 def summarise_grades(grades: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Per-subject count and weighted average of the numeric marks (1 is best)."""
     subjects: dict[str, dict[str, Any]] = {}

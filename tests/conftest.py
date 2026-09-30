@@ -157,7 +157,14 @@ class FakeEdupage:
     def get_grades(self):
         return type(self).grades
 
+    def get_text_grades(self):
+        return type(self).text_grades
+
+    def get_text_grades_for_term(self, year, term):
+        return type(self).text_grades
+
     grades: list[Any] = []
+    text_grades: list[Any] = []
 
 
 @pytest.fixture(autouse=True)
@@ -169,6 +176,7 @@ def reset_fake():
     FakeEdupage.two_factor = None
     FakeEdupage.fail_login = None
     FakeEdupage.grades = []
+    FakeEdupage.text_grades = []
     yield
 
 

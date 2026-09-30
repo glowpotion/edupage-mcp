@@ -1,6 +1,6 @@
 [project]
 name = "edupage-mcp"
-version = "0.1.0"
+version = "0.2.0"
 description = "MCP server for EduPage (edupage.org): timetables, homework, grades, messages, absences and canteen menus"
 readme = "README.md"
 authors = [
@@ -12,7 +12,7 @@ license-files = ["LICENSE"]
 keywords = ["mcp", "edupage", "school", "model-context-protocol"]
 dependencies = [
     "anyio>=4.0",
-    "edupage-api>=0.12.6,<0.13",
+    "edupage-api>=0.13.0,<0.14",
     "mcp>=2.0,<3",
 ]
 

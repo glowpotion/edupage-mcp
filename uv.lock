@@ -332,19 +332,19 @@ wheels = [
 
 [[package]]
 name = "edupage-api"
-version = "0.12.6"
+version = "0.13.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "requests" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/68/a0/b299895ce71a881299000055227cc035616a80809bc4b10b27a0e89be085/edupage_api-0.12.6.tar.gz", hash = "sha256:9bbe798d2da9d831d3e02cfda0faf4338338639ea2d0b0470e371d2aa7991855", size = 40716, upload-time = "2026-09-15T15:40:20.248Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/58/e3/c371b4987f63a6176afbafa474e511bb8817a8b40eec73590a1207ab9819/edupage_api-0.13.0.tar.gz", hash = "sha256:0b06201b07835e37459e937e40aaee270239e4493c6851499cfb382dbedd8ce7", size = 44745, upload-time = "2026-09-30T09:46:59.852Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/9b/3d/99521002165bcf3eea50ddcd866b8d3e57386b004293f9f83727535f3291/edupage_api-0.12.6-py3-none-any.whl", hash = "sha256:9da1c126110b8327f04fef4c831ac3e5a7d7f3421d18ef4a3bbeefac52939dde", size = 46680, upload-time = "2026-09-15T15:40:18.984Z" },
+    { url = "https://files.pythonhosted.org/packages/93/9d/a91e1324e7feb064337d9a8a7ad99097dd305cdcf6c8da3dc0ff31b5327a/edupage_api-0.13.0-py3-none-any.whl", hash = "sha256:87d72fa84938e6071800b7114bf762da821c63a40497e8ac3e4befa173b1b57d", size = 47817, upload-time = "2026-09-30T09:46:58.635Z" },
 ]
 
 [[package]]
 name = "edupage-mcp"
-version = "0.1.0"
+version = "0.2.0"
 source = { editable = "." }
 dependencies = [
     { name = "anyio" },
@@ -360,7 +360,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "anyio", specifier = ">=4.0" },
-    { name = "edupage-api", specifier = ">=0.12.6,<0.13" },
+    { name = "edupage-api", specifier = ">=0.13.0,<0.14" },
     { name = "mcp", specifier = ">=2.0,<3" },
 ]
 

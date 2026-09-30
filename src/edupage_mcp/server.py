@@ -204,7 +204,8 @@ async def get_notifications(
     description=(
         "A student's marks for the current term, newest first, with a per-subject "
         "summary (count and weighted average). Marks run 1 (best) to 5; points and "
-        "percentage marks include `max_points` and `percent`. Filter with "
+        "percentage marks include `max_points` and `percent`. Written evaluations "
+        "(no numeric mark) come back separately as `text_grades`. Filter with "
         "`subject` (name or abbreviation) and `since`. For an earlier term pass "
         "`school_year` (the starting year, e.g. 2025 for 2025/26) and `term` (1 or 2)."
     ),

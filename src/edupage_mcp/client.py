@@ -24,6 +24,7 @@ from edupage_api.exceptions import (
     CaptchaException,
     SecondFactorFailedException,
 )
+from edupage_api.exceptions import FailedToParseGradeDataError
 from edupage_api.grades import Term
 from edupage_api.login import Login, TwoFactorLogin
 from edupage_api.substitution import Substitution
@@ -436,8 +437,9 @@ class EdupageClient:
         school.timeline = (key, time.monotonic(), data)
         return data
 
-    def grades(self, student: Student, year: int | None, term: str | None) -> tuple[list, Directory]:
-        def call(edupage: Edupage) -> tuple[list, Directory]:
+    def grades(self, student: Student, year: int | None, term: str | None) -> tuple[list, list, Directory]:
+        """Numeric marks, written (text) evaluations, and the school's directory."""
+        def call(edupage: Edupage) -> tuple[list, list, Directory]:
             self.select_child(edupage, student)
             if year is not None or term is not None:
                 t = {"1": Term.FIRST, "first": Term.FIRST, "2": Term.SECOND,
@@ -446,9 +448,16 @@ class EdupageClient:
                     raise EdupageToolError("`term` must be 1 or 2 when `school_year` is given.")
                 y = year if year is not None else edupage.get_school_year()
                 grades = edupage.get_grades_for_term(y, t)
+                fetch_text = lambda: edupage.get_text_grades_for_term(y, t)  # noqa: E731
             else:
                 grades = edupage.get_grades()
-            return grades, Directory(edupage.data.get("dbi"))
+                fetch_text = edupage.get_text_grades
+            try:
+                text_grades = fetch_text()
+            except (TypeError, FailedToParseGradeDataError):
+                # Schools without written evaluations have no `vsetkyVcelicky` block.
+                text_grades = []
+            return grades, text_grades, Directory(edupage.data.get("dbi"))
 
         return self.run(student.school, call)
 

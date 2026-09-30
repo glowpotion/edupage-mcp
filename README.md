@@ -21,7 +21,7 @@ parent account; the schools are discovered automatically.
 | `get_homework` | `student?`, `start_date?`, `end_date?`, `kind?` (`all`/`homework`/`exam`), `include_done?` | Homework and announced exams by due date, with subject, teacher, details, attachments, done state |
 | `get_messages` | `student?`, `since?` (14 days), `search?`, `limit?` | Messages and chats, newest first, replies nested, attachments, read-receipt requests |
 | `get_notifications` | `student?`, `since?` (7 days), `types?`, `search?`, `limit?`, `include_system?` | The whole timeline: grades, homework, events, absences, payments, sign-up forms, substitutions... |
-| `get_grades` | `student?`, `subject?`, `school_year?`, `term?`, `since?` | Marks with weight, points, class average, teacher; per-subject weighted averages |
+| `get_grades` | `student?`, `subject?`, `school_year?`, `term?`, `since?` | Marks with weight, points, class average, teacher; per-subject weighted averages; written evaluations as `text_grades` |
 | `get_absences` | `student?`, `since?` (school year start) | Absences with periods and excused state, excuse notes, day totals |
 | `get_events` | `student?`, `start_date?`, `end_date?` (30 days) | Trips, exams, school events, holidays and days off |
 | `get_substitutions` | `student?` or school, `date?`, `all_classes?` | The substitution plan for the student's class (or the whole school) and missing teachers |
