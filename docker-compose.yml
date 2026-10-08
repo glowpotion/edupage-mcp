@@ -2,7 +2,7 @@
 # .env (see .env.example):   docker compose up -d
 services:
   edupage-mcp:
-    image: ghcr.io/frizzy/edupage-mcp:latest
+    image: ghcr.io/glowpotion/edupage-mcp:latest
     build: .
     restart: unless-stopped
     env_file: .env

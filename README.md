@@ -47,7 +47,7 @@ You need [uv](https://docs.astral.sh/uv/getting-started/installation/); it
 fetches Python 3.12+ for you if necessary.
 
 ```bash
-git clone https://github.com/frizzy/edupage-mcp.git
+git clone https://github.com/glowpotion/edupage-mcp.git
 cd edupage-mcp
 cp .env.example .env   # then fill it in
 uv sync
@@ -163,7 +163,7 @@ mcp_servers:
   edupage:
     command: "docker"
     args: ["run", "-i", "--rm", "-e", "EDUPAGE_USERNAME", "-e", "EDUPAGE_PASSWORD",
-           "ghcr.io/frizzy/edupage-mcp:latest"]
+           "ghcr.io/glowpotion/edupage-mcp:latest"]
     env:
       EDUPAGE_USERNAME: "${EDUPAGE_USERNAME}"
       EDUPAGE_PASSWORD: "${EDUPAGE_PASSWORD}"
@@ -193,14 +193,14 @@ To give the agent read access only, set `EDUPAGE_READ_ONLY: "true"` under
 ## Running with Docker
 
 A multi-arch image (amd64 and arm64, so a Raspberry Pi works too) is published
-as `ghcr.io/frizzy/edupage-mcp`. To build it yourself instead, run
+as `ghcr.io/glowpotion/edupage-mcp`. To build it yourself instead, run
 `docker build -t edupage-mcp .` in a checkout and use that name below.
 
 Check your credentials first, using a `.env` file filled in from
 [`.env.example`](.env.example):
 
 ```bash
-docker run --rm -it --env-file .env ghcr.io/frizzy/edupage-mcp --check
+docker run --rm -it --env-file .env ghcr.io/glowpotion/edupage-mcp --check
 ```
 
 ### As a stdio server
@@ -214,7 +214,7 @@ For Claude Code:
 claude mcp add edupage \
   --env EDUPAGE_USERNAME=you@example.com \
   --env EDUPAGE_PASSWORD=your-edupage-password \
-  -- docker run -i --rm -e EDUPAGE_USERNAME -e EDUPAGE_PASSWORD ghcr.io/frizzy/edupage-mcp
+  -- docker run -i --rm -e EDUPAGE_USERNAME -e EDUPAGE_PASSWORD ghcr.io/glowpotion/edupage-mcp
 ```
 
 ### Always on, over HTTP
@@ -242,8 +242,7 @@ The same server can run as an always-on service on a Pi (or any systemd Linux
 box), speaking MCP's streamable-HTTP transport and guarded by a bearer token.
 By default it listens on `127.0.0.1` only, for an agent harness running on the
 Pi itself; `--lan` opens it to your home network or Tailscale instead. It uses
-port 8766, so it can run alongside
-[icloud-calendar-mcp](https://github.com/frizzy/icloud-calendar-mcp) on 8765.
+port 8766.
 
 **Requirements on the Pi:** 64-bit Raspberry Pi OS (Bookworm or later),
 SSH access from your machine, `rsync`, and [uv](https://docs.astral.sh/uv/):

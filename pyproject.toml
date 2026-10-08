@@ -17,7 +17,7 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/frizzy/edupage-mcp"
+Repository = "https://github.com/glowpotion/edupage-mcp"
 
 [project.scripts]
 edupage-mcp = "edupage_mcp.server:main"

@@ -12,7 +12,7 @@ COPY src ./src
 RUN uv sync --frozen --no-dev --no-editable
 
 FROM python:3.12-slim
-LABEL org.opencontainers.image.source="https://github.com/frizzy/edupage-mcp" \
+LABEL org.opencontainers.image.source="https://github.com/glowpotion/edupage-mcp" \
       org.opencontainers.image.description="MCP server for EduPage: timetables, homework, grades, messages and canteen menus" \
       org.opencontainers.image.licenses="MIT"
 RUN useradd --system --uid 10001 --no-create-home mcp \
